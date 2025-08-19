@@ -10,8 +10,11 @@ import {
     Row, 
     Col,
     Image,
-    Popconfirm
+    Popconfirm,
+    Typography
 } from 'antd';
+
+const { Text } = Typography;
 import { 
     PlusOutlined, 
     DeleteOutlined, 
@@ -27,8 +30,10 @@ import { aiWritingAPI } from '../../api/ai';
 import { ARTICLE_STATUS } from '../../types/article';
 import ImprovedRichTextEditor from '../../components/ImprovedRichTextEditor';
 import AIWritingPanel from '../../components/AIWritingPanel';
+import OriginArticleSelector from '../../components/OriginArticleSelector';
 import type { Article, ArticleSubmitRequest, ArticleImage } from '../../types/article';
 import type { FileRecord } from '../../types/file';
+import type { OriginArticle } from '../../types/originArticle';
 
 interface ArticleEditorProps {
     mode: 'create' | 'edit';
@@ -42,6 +47,29 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({ mode }) => {
     const [uploading, setUploading] = useState(false);
     const [images, setImages] = useState<ArticleImage[]>([]);
     const [article, setArticle] = useState<Article | null>(null);
+    
+    // 原文章选择相关状态
+    const [originSelectorVisible, setOriginSelectorVisible] = useState(false);
+    const [selectedOriginArticle, setSelectedOriginArticle] = useState<OriginArticle | null>(null);
+
+    // 处理原文章选择
+    const handleOriginArticleSelect = (originArticle: OriginArticle, rewrittenTitle: string) => {
+        setSelectedOriginArticle(originArticle);
+        setOriginSelectorVisible(false);
+        
+        // 将改写后的标题填入表单
+        form.setFieldsValue({
+            title: rewrittenTitle
+        });
+        
+        message.success(`已选择原文章"${originArticle.title}"，标题已AI改写`);
+    };
+
+    // 移除原文章选择
+    const handleRemoveOriginArticle = () => {
+        setSelectedOriginArticle(null);
+        message.info('已移除原文章关联');
+    };
 
     // 如果是编辑模式，获取文章信息
     useEffect(() => {
@@ -170,6 +198,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({ mode }) => {
             const articleData: ArticleSubmitRequest = {
                 title: values.title,
                 content: values.content,
+                originArticleId: selectedOriginArticle?.id || null,
                 images: images.map(img => ({
                     id: img.imageId,
                     sortOrder: img.sortOrder
@@ -218,13 +247,58 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({ mode }) => {
                     layout="vertical" 
                     style={{ maxWidth: 1000, margin: '0 auto' }}
                 >
+                    {/* 原文章选择功能 - 仅在创建模式下显示 */}
+                    {mode === 'create' && (
+                        <Form.Item label="原始文章">
+                            {selectedOriginArticle ? (
+                                <div style={{ 
+                                    padding: 12, 
+                                    backgroundColor: '#f6ffed', 
+                                    border: '1px solid #b7eb8f',
+                                    borderRadius: 6,
+                                    marginBottom: 16
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <Text strong style={{ color: '#52c41a' }}>已关联原文章：</Text>
+                                            <div style={{ marginTop: 4 }}>
+                                                <Text>{selectedOriginArticle.title}</Text>
+                                                {selectedOriginArticle.department && (
+                                                    <Text type="secondary"> | {selectedOriginArticle.department}</Text>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Button 
+                                            type="text" 
+                                            danger 
+                                            size="small"
+                                            onClick={handleRemoveOriginArticle}
+                                        >
+                                            移除关联
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Button 
+                                    type="dashed" 
+                                    block 
+                                    style={{ marginBottom: 16 }}
+                                    onClick={() => setOriginSelectorVisible(true)}
+                                    icon={<RobotOutlined />}
+                                >
+                                    选择原始文章并AI改写标题
+                                </Button>
+                            )}
+                        </Form.Item>
+                    )}
+
                     <Form.Item
                         name="title"
                         label="文章标题"
                         rules={[{ required: true, message: '请输入标题' }]}
                     >
                         <Input 
-                            placeholder="请输入文章标题" 
+                            placeholder={selectedOriginArticle ? "标题已由AI改写生成" : "请输入文章标题"} 
                             size="large"
                             style={{ fontSize: 18 }}
                         />
@@ -379,6 +453,13 @@ const ArticleEditor: React.FC<ArticleEditorProps> = ({ mode }) => {
                     </Form.Item>
                 </Form>
             </Card>
+
+            {/* 原文章选择器 */}
+            <OriginArticleSelector
+                visible={originSelectorVisible}
+                onCancel={() => setOriginSelectorVisible(false)}
+                onSelect={handleOriginArticleSelect}
+            />
         </div>
     );
 };

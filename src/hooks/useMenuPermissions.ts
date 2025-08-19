@@ -45,6 +45,13 @@ export const menuConfig: MenuConfig = {
     icon: '📋',
     path: '/my-posts',
     roles: ['ADMIN', 'STUDENT']
+  },
+  originArticles: {
+    key: 'originArticles',
+    label: '原始文章管理',
+    icon: '📚',
+    path: '/origin-articles',
+    roles: ['ADMIN']
   }
 };
 

@@ -40,6 +40,7 @@ import ArticleDetail from './pages/ArticleManagement/ArticleDetail';
 import ArticleReview from './pages/ArticleManagement/ArticleReview';
 import MyPosts from './pages/ArticleManagement/MyPosts';
 import UserManagement from './pages/UserManagement/UserManagement';
+import OriginArticleManagement from './pages/OriginArticleManagement/OriginArticleManagement';
 import Welcome from './pages/Welcome';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
@@ -281,6 +282,13 @@ function AppLayout() {
               <ProtectedRoute>
                 <RoleProtectedRoute path="/users" requiredRoles={['ADMIN']}>
                   <UserManagement />
+                </RoleProtectedRoute>
+              </ProtectedRoute>
+            } />
+            <Route path="/origin-articles" element={
+              <ProtectedRoute>
+                <RoleProtectedRoute path="/origin-articles" requiredRoles={['ADMIN']}>
+                  <OriginArticleManagement />
                 </RoleProtectedRoute>
               </ProtectedRoute>
             } />

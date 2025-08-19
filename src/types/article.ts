@@ -34,6 +34,7 @@ export interface Article {
     title: string;
     content: string;
     authorId: number;
+    originArticleId: number | null;
     status: ArticleStatus;
     submittedAt: string;
     reviewedAt: string | null;
@@ -43,6 +44,7 @@ export interface Article {
     updatedAt: string;
     authorName: string;
     reviewerName: string | null;
+    originArticleTitle: string | null;
     images: ArticleImage[];
 }
 
@@ -50,6 +52,7 @@ export interface Article {
 export interface ArticleSubmitRequest {
     title: string;
     content: string;
+    originArticleId?: number | null;
     images: ArticleImageRequest[];
 }
 
