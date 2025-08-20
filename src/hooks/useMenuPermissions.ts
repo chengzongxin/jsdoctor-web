@@ -59,6 +59,13 @@ export const menuConfig: MenuConfig = {
     icon: '👩‍⚕️',
     path: '/doctors',
     roles: ['ADMIN']
+  },
+  contentManagement: {
+    key: 'contentManagement',
+    label: '内容管理',
+    icon: '📋',
+    path: '/content-management',
+    roles: ['ADMIN']
   }
 };
 

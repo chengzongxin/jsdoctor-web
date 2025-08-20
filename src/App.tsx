@@ -42,6 +42,7 @@ import MyPosts from './pages/ArticleManagement/MyPosts';
 import UserManagement from './pages/UserManagement/UserManagement';
 import OriginArticleManagement from './pages/OriginArticleManagement/OriginArticleManagement';
 import DoctorManagement from './pages/DoctorManagement/DoctorManagement';
+import ContentManagement from './pages/ContentManagement/ContentManagement';
 import Welcome from './pages/Welcome';
 import ProtectedRoute from './components/ProtectedRoute';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
@@ -95,6 +96,8 @@ const getMenuIcon = (key: string) => {
       return <BookOutlined />;
     case 'doctors':
       return <UserOutlined />;
+    case 'contentManagement':
+      return <DatabaseOutlined />;
     default:
       return <BookOutlined />;
   }
@@ -301,6 +304,13 @@ function AppLayout() {
               <ProtectedRoute>
                 <RoleProtectedRoute path="/doctors" requiredRoles={['ADMIN']}>
                   <DoctorManagement />
+                </RoleProtectedRoute>
+              </ProtectedRoute>
+            } />
+            <Route path="/content-management" element={
+              <ProtectedRoute>
+                <RoleProtectedRoute path="/content-management" requiredRoles={['ADMIN']}>
+                  <ContentManagement />
                 </RoleProtectedRoute>
               </ProtectedRoute>
             } />
