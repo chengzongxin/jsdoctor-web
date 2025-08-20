@@ -179,7 +179,7 @@ function AppLayout() {
           borderBottom: '1px solid #f0f0f0'
         }}>
           <div style={{ fontSize: 20, fontWeight: 'bold' }}>
-            内容发布管理平台
+            妙笔仁心
           </div>
           <UserMenu />
         </Header>

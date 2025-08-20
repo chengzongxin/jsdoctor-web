@@ -13,7 +13,7 @@ const Welcome: React.FC = () => {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '50px' }}>
-        <Title level={2}>欢迎使用内容发布管理平台</Title>
+        <Title level={2}>欢迎使用妙笔仁心</Title>
         <Text>加载中...</Text>
       </div>
     );
@@ -21,7 +21,7 @@ const Welcome: React.FC = () => {
 
   return (
     <div style={{ padding: '24px' }}>
-      <Title level={2}>欢迎使用内容发布管理平台</Title>
+      <Title level={2}>欢迎使用妙笔仁心</Title>
       
       {/* 用户信息卡片 */}
       <Card title="用户信息" style={{ marginBottom: '24px' }}>

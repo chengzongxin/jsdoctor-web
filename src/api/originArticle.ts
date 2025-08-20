@@ -1,8 +1,6 @@
 // 原始文章API接口
 import type { OriginArticle, OriginArticleImportResult, OriginArticleListResponse, OriginArticleQueryParams } from '../types/originArticle';
 
-const API_BASE_URL = 'http://localhost:8000/api';
-
 const request = async <T>(
     url: string, 
     options: RequestInit = {}
@@ -16,7 +14,7 @@ const request = async <T>(
         },
     };
 
-    const response = await fetch(`${API_BASE_URL}${url}`, {
+    const response = await fetch(`${url}`, {
         ...defaultOptions,
         ...options,
     });
@@ -41,7 +39,7 @@ export const importExcelFile = async (file: File): Promise<OriginArticleImportRe
     const formData = new FormData();
     formData.append('file', file);
     
-    const response = await fetch(`${API_BASE_URL}/origin-articles/import`, {
+    const response = await fetch(`/api/origin-articles/import`, {
         method: 'POST',
         headers: {
             ...(token && { 'token': token }),
@@ -72,19 +70,19 @@ export const getOriginArticleList = async (params: OriginArticleQueryParams = {}
     if (params.department) searchParams.append('department', params.department);
     if (params.status !== undefined) searchParams.append('status', params.status.toString());
     
-    const url = `/origin-articles/list${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+    const url = `/api/origin-articles/list${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
     
     return request<OriginArticleListResponse>(url);
 };
 
 // 获取原始文章详情
 export const getOriginArticleDetail = async (id: number): Promise<OriginArticle> => {
-    return request<OriginArticle>(`/origin-articles/${id}`);
+    return request<OriginArticle>(`/api/origin-articles/${id}`);
 };
 
 // 更新原始文章
 export const updateOriginArticle = async (id: number, article: Partial<OriginArticle>): Promise<string> => {
-    return request<string>(`/origin-articles/${id}`, {
+    return request<string>(`/api/origin-articles/${id}`, {
         method: 'PUT',
         body: JSON.stringify(article),
     });
@@ -92,14 +90,14 @@ export const updateOriginArticle = async (id: number, article: Partial<OriginArt
 
 // 删除原始文章
 export const deleteOriginArticle = async (id: number): Promise<string> => {
-    return request<string>(`/origin-articles/${id}`, {
+    return request<string>(`/api/origin-articles/${id}`, {
         method: 'DELETE',
     });
 };
 
 // 批量删除原始文章
 export const deleteOriginArticles = async (ids: number[]): Promise<string> => {
-    return request<string>('/origin-articles/batch', {
+    return request<string>('/api/origin-articles/batch', {
         method: 'DELETE',
         body: JSON.stringify(ids),
     });
@@ -107,7 +105,7 @@ export const deleteOriginArticles = async (ids: number[]): Promise<string> => {
 
 // 获取科室列表
 export const getDepartments = async (): Promise<string[]> => {
-    return request<string[]>('/origin-articles/departments');
+    return request<string[]>('/api/origin-articles/departments');
 };
 
 // 获取可选择的文章列表（学生用）
@@ -117,7 +115,7 @@ export const getArticlesForSelection = async (department?: string, limit: number
     if (department) searchParams.append('department', department);
     searchParams.append('limit', limit.toString());
     
-    const url = `/origin-articles/selection${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
+    const url = `/api/origin-articles/selection${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
     
     return request<OriginArticle[]>(url);
 };
