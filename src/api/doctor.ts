@@ -8,7 +8,7 @@ import type {
     DoctorListResponse 
 } from '../types/doctor';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = '/api';
 
 const request = async <T>(
     url: string, 

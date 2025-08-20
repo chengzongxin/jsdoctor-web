@@ -8,7 +8,7 @@ import type {
     DoctorAssignmentRequest
 } from '../types/contentManagement';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = '/api';
 
 const request = async <T>(
     url: string,
