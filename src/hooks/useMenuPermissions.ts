@@ -52,6 +52,13 @@ export const menuConfig: MenuConfig = {
     icon: '📚',
     path: '/origin-articles',
     roles: ['ADMIN']
+  },
+  doctors: {
+    key: 'doctors',
+    label: '医生管理',
+    icon: '👩‍⚕️',
+    path: '/doctors',
+    roles: ['ADMIN']
   }
 };
 
