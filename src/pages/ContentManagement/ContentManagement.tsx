@@ -357,7 +357,7 @@ const ContentManagement: React.FC = () => {
                         type="link"
                         size="small"
                         icon={<EyeOutlined />}
-                        onClick={() => handleViewDetail(record.articleId)}
+                        onClick={() => record.articleId && handleViewDetail(record.articleId)}
                     >
                         详情
                     </Button>
@@ -569,7 +569,7 @@ const ContentManagement: React.FC = () => {
                             {currentItem.articleTitle}
                         </Descriptions.Item>
                         <Descriptions.Item label="审核状态">
-                            <Tag color={ARTICLE_STATUS_COLOR[currentItem.articleStatus]}>
+                            <Tag color={currentItem.articleStatus ? ARTICLE_STATUS_COLOR[currentItem.articleStatus] : 'default'}>
                                 {currentItem.articleStatusText}
                             </Tag>
                         </Descriptions.Item>
