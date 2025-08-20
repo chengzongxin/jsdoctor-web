@@ -119,3 +119,22 @@ export const getArticlesForSelection = async (department?: string, limit: number
     
     return request<OriginArticle[]>(url);
 };
+
+// 按科室领取下一个可用的源文章
+export const claimNextArticle = async (department: string): Promise<OriginArticle> => {
+    const searchParams = new URLSearchParams();
+    searchParams.append('department', department);
+    
+    const url = `/api/origin-articles/claim-next?${searchParams.toString()}`;
+    
+    return request<OriginArticle>(url, {
+        method: 'POST',
+    });
+};
+
+// 标记源文章为已使用
+export const markArticleAsUsed = async (id: number): Promise<string> => {
+    return request<string>(`/api/origin-articles/${id}/mark-used`, {
+        method: 'POST',
+    });
+};

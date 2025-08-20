@@ -253,11 +253,12 @@ function AppLayout() {
             } />
             <Route path="/articles/new" element={
               <ProtectedRoute>
-                <RoleProtectedRoute path="/articles/new" requiredRoles={['ADMIN', 'REVIEWER']}>
+                <RoleProtectedRoute path="/articles/new" requiredRoles={['ADMIN', 'REVIEWER', 'STUDENT']}>
                   <ArticleEditor mode="create" />
                 </RoleProtectedRoute>
               </ProtectedRoute>
             } />
+
             <Route path="/articles/:id" element={
               <ProtectedRoute>
                 <RoleProtectedRoute path="/articles" requiredRoles={['ADMIN', 'REVIEWER']}>
